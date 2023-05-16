@@ -1,0 +1,53 @@
+// {
+//     "env": {
+//         "browser": true,
+//         "es2021": true
+//     },
+//     // 继承其他的eslint配置
+//     "extends": [
+//         "eslint:recommended",
+//         "plugin:@typescript-eslint/recommended"
+//     ],
+//     "overrides": [
+//     ],
+//     // 配置那个解析器将代码解析为AST抽象语法树
+//     "parser": "@typescript-eslint/parser",
+//     // 解析器配置
+//     "parserOptions": {
+//         // 什么版本js代码
+//         "ecmaVersion": "latest",
+//         "sourceType": "module"
+//     },
+//     // 规则合集
+//     "plugins": [
+//         "@typescript-eslint"
+//     ],
+//     // 规则
+//     "rules": {
+//     }
+// }
+{
+    "env": {
+     "browser": true,
+     "es2021": true,
+     "node": true
+    },
+    "extends": [
+     "eslint:recommended",
+     "plugin:@typescript-eslint/recommended",
+     "prettier",
+     "plugin:prettier/recommended"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+     "ecmaVersion": "latest",
+     "sourceType": "module"
+    },
+    "plugins": ["@typescript-eslint", "prettier"],
+    "rules": {
+     "prettier/prettier": "error",
+     "no-case-declarations": "off",
+     "no-constant-condition": "off",
+     "@typescript-eslint/ban-ts-comment": "off"
+    }
+ }
