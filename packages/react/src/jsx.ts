@@ -70,5 +70,33 @@ export const jsx = (type: ElementType, config: any, ...maybeChildren: any) => {
 	return ReactElement(type, key, ref, props);
 };
 
-// 实际在react中开发环境和生产环境是不同的实现
-export const jsxDEV = jsx;
+export const jsxDEV = (type: ElementType, config: any) => {
+	let key: Key = null;
+	const props: Props = {};
+	let ref: Ref = null;
+	// 遍历config处理key，ref
+	for (const prop in config) {
+		const val = config[prop];
+		// 处理key
+		if (prop === 'key') {
+			// 处理为字符串
+			if (val !== undefined) {
+				key = '' + val;
+			}
+			continue;
+		}
+		// 处理ref
+		if (prop === 'ref') {
+			if (val !== undefined) {
+				ref = val;
+			}
+			continue;
+		}
+		// 对于其他的属性需要判断是否是config自己的property,而不是原型上的
+		if ({}.hasOwnProperty.call(config, prop)) {
+			// 如果是自己的属性，赋值给props,不是就不赋值
+			props[prop] = val;
+		}
+	}
+	return ReactElement(type, key, ref, props);
+};
