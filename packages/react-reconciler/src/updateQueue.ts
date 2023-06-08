@@ -7,6 +7,7 @@ export interface Update<State> {
 }
 
 export interface UpdateQueue<State> {
+    // 使用对象，这样的结构可以workInProgress和current中共用
     shared: {
         pending: Update<State> | null;
     }
@@ -56,4 +57,6 @@ export const processUpdateQueue = <State>(
             result.memorizedState = action;
         }
     }
+
+    return result;
 }

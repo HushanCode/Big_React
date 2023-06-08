@@ -2,16 +2,40 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { beginWork } from './beginWork';
 import { completeWork } from './completeWork';
-import { FiberNode } from './fiber';
+import { FiberNode, FiberRootNode, createWorkInProgress } from './fiber';
+import { HostRoot } from './workTags';
 
 let workInProgress: FiberNode | null = null;
 
 // 初始化操作
-function prepareFreshStack(fiber: FiberNode) {
-    workInProgress = fiber;
+function prepareFreshStack(root: FiberRootNode) {
+    workInProgress = createWorkInProgress(root.current, {});
 }
 
-function renderRoot(root: FiberNode) {
+// 连接container和renderRoot方法
+// 再fiber中调用update
+export function scheduleUpdateOnFiber(fiber: FiberNode) {
+    // 从当前节点找到fiberRootNode
+    const root = markUpdateFromFiberRoot(fiber);
+    renderRoot(root);
+}
+
+function markUpdateFromFiberRoot(fiber: FiberNode) {
+    let node = fiber;
+    let parent = node.return;
+    // 普通节点
+    while (parent !== null) {
+        node = parent;
+        parent = node.return;
+    }
+    // HostRootFiber节点
+    if (node.tag === HostRoot) {
+        return node.stateNode;
+    }
+    return null;
+}
+
+function renderRoot(root: FiberRootNode) {
     // 初始化
     prepareFreshStack(root);
     do {
