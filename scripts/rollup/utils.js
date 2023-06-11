@@ -7,6 +7,8 @@ import ts from 'rollup-plugin-typescript2';
 
 import cjs from '@rollup/plugin-commonjs';
 
+import replace from '@rollup/plugin-replace';
+
 // ===========resolvePkgPath， getPackageJSON==============
 // 这两个方法用解析package.json中的信息，因为打包input需要路径信息
 // 包路径
@@ -47,6 +49,11 @@ export function getPackageJSON(pkgName) {
  * @param {*} param0 配置项
  * @returns 插件数组list
  */
-export function getBaseRollupPlugins({ typescript = {} } = {}) {
-	return [cjs(), ts(typescript)];
+export function getBaseRollupPlugins({
+	alias = {
+		__DEV__: true
+	},
+	typescript = {}
+} = {}) {
+	return [replace(alias), cjs(), ts(typescript)];
 }
